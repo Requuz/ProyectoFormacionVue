@@ -10,6 +10,10 @@
 
 <style>
 
+#app{
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }

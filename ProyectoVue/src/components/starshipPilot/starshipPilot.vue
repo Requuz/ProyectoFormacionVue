@@ -222,75 +222,80 @@ export default {
 };
 </script>
 <template>
-      <h1 class="text-4xl font-bold mb-4">Naves y pilotos</h1>
-
-      <input type="checkbox" id="my-modal-5" class="modal-toggle" />
-      <!--Modal-->
-      <div class="modal flex items-center justify-center h-screen w-screen">
-      <div class="modal-box w-3/4 max-w-3xl m-4 grid grid-cols-2 gap-4">
-          <h1 class="text-2xl font-bold col-span-2">Gestión</h1>
-          <div id="borrar" class="mb-4 flex flex-col items-start">
-              <h3 class="font-bold text-lg mb-2">Borrar piloto</h3>
-              <p class="py-2">Seleccione un piloto</p>
-              <select class="select select-error w-full max-w-xs mb-2" v-model="selectedPilotToDelete" required>
-                  <option v-for="pilot in pilots" :key="pilot.id" :value="pilot.id">
-                      {{ pilot.name }}
-                  </option>
-              </select>
-             <label for="my-modal-5" class="btn btn-outline btn-error" @click="deletePilot(selectedPilotToDelete)">Borrar piloto</label>
-          </div>
-          <div id="vincular" class="mb-4 flex flex-col items-end">
-              <h3 class="font-bold text-lg mb-2">Vincular o desvincular</h3>
-              <p class="py-2">Seleccione un piloto</p>
-              <select class="select select-info w-full max-w-xs mb-2" v-model="selectedPilotToLink" required>
-                  <option v-for="pilot in pilots" :key="pilot.id" :value="pilot.id">
-                      {{ pilot.name }}
-                  </option>
-              </select>
-              <p class="py-2">Seleccione una nave</p>
-              <select class="select select-info w-full max-w-xs mb-2" v-model="selectedStarshipToLink" required>
-                  <option v-for="starship in starships" :key="starship.id" :value="starship.id">
-                      {{ starship.name }}
-                  </option>
-              </select>
-              <label for="my-modal-5" class="btn btn-outline btn-info" @click="linkPilot(selectedPilotToLink, selectedStarshipToLink)">Vincular piloto y nave</label>
-              <label for="my-modal-5" class="btn btn-outline btn-warning" @click="unlinkPilot(selectedPilotToLink, selectedStarshipToLink)">Desvincular piloto y nave</label>
-          </div>
-          <div class="modal-action col-span-2">
-              <label for="my-modal-5" class="btn">Cerrar</label>
-          </div>
+      
+    <div id="bg">
+      <div class="title">
+        <h1>Star Wars
+          <span>Naves y pilotos</span>
+        </h1>
       </div>
-  </div>
-      <!---->
-
       <!--Tarjetas-->
       <div class="main flex flex-wrap justify-center">
-        <div class="card w-96 bg-base-100 shadow-xl" v-for="starship in starships" :key="starship.id">
+        <div class="card card-side glass" v-for="starship in starships" :key="starship.id">
           <div class="avatar">
             <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
               <img :src="'../images/starships/' + starship.name + '.jpg'" />
             </div>
           </div>
-          <div class="card-body">
-            <h2 class="text-2xl font-bold"><strong>{{ starship.name }}</strong></h2>
-            <p><strong>Precio: </strong> {{ base10to15(getStarshipPrice(starship.id)) }}</p>
-            <p><strong>Pilotos: </strong>
-              <span class="badge-outline badge-secondary" v-for="(pilotId, index) in getPilotsByStarship(starship.id)" :key="pilotId">
+          <div class="card-body text-black">
+            <h2 class="text-4xl font-bold"><strong>{{ starship.name }}</strong></h2>
+            <p id="credits" class="font-bold">{{ base10to15(getStarshipPrice(starship.id)) }} créditos</p>
+            <p><strong><span class="badge-outline badge-secondary" v-for="(pilotId, index) in getPilotsByStarship(starship.id)" :key="pilotId">
                 {{ getPilotName(pilotId) }}<span v-if="index < getPilotsByStarship(starship.id).length - 1">, </span>
-              </span>
+              </span></strong> 
               <div 
-              class="badge-outline badge-accent inline-block mr-2 mb-2" 
+              class="badge badge-accent badge-outline mr-2 mb-2" 
               v-if="!starship.pilots.length"
             >
               Sin pilotos asignados
             </div>
             </p>
             <div id="btnGestionar">
-              <label for="my-modal-5" class="btn btn-active btn-primary" @click="selectedStarshipToLink = starship.id; selectedPilotToLink = getLastPilotForStarship(starship.id)">Gestionar</label>
+              <label for="my-modal-5" class="btn btn-outline btn-primary" @click="selectedStarshipToLink = starship.id; selectedPilotToLink = getLastPilotForStarship(starship.id)">Gestionar</label>
             </div>
           </div>
         </div>
     </div>
+    </div>  
+
+     <input type="checkbox" id="my-modal-5" class="modal-toggle" />
+        <!--Modal-->
+        <div class="modal flex items-center justify-center h-screen w-screen">
+        <div class="modal-box w-3/4 max-w-3xl m-4 grid grid-cols-2 gap-4">
+            <h1 class="text-2xl font-bold col-span-2">Gestión</h1>
+            <div id="borrar" class="mb-4 flex flex-col items-start">
+                <h3 class="font-bold text-lg mb-2">Borrar piloto</h3>
+                <p class="py-2">Seleccione un piloto</p>
+                <select class="select select-error w-full max-w-xs mb-2" v-model="selectedPilotToDelete" required>
+                    <option v-for="pilot in pilots" :key="pilot.id" :value="pilot.id">
+                        {{ pilot.name }}
+                    </option>
+                </select>
+               <label for="my-modal-5" class="btn btn-outline btn-error" @click="deletePilot(selectedPilotToDelete)">Borrar piloto</label>
+            </div>
+            <div id="vincular" class="mb-4 flex flex-col items-end">
+                <h3 class="font-bold text-lg mb-2">Vincular o desvincular</h3>
+                <p class="py-2">Seleccione un piloto</p>
+                <select class="select select-info w-full max-w-xs mb-2" v-model="selectedPilotToLink" required>
+                    <option v-for="pilot in pilots" :key="pilot.id" :value="pilot.id">
+                        {{ pilot.name }}
+                    </option>
+                </select>
+                <p class="py-2">Seleccione una nave</p>
+                <select class="select select-info w-full max-w-xs mb-2" v-model="selectedStarshipToLink" required>
+                    <option v-for="starship in starships" :key="starship.id" :value="starship.id">
+                        {{ starship.name }}
+                    </option>
+                </select>
+                <label for="my-modal-5" class="btn btn-outline btn-info" @click="linkPilot(selectedPilotToLink, selectedStarshipToLink)">Vincular piloto y nave</label>
+                <label for="my-modal-5" class="btn btn-outline btn-warning" @click="unlinkPilot(selectedPilotToLink, selectedStarshipToLink)">Desvincular piloto y nave</label>
+            </div>
+            <div class="modal-action col-span-2">
+                <label for="my-modal-5" class="btn">Cerrar</label>
+            </div>
+        </div>
+    </div>
+
   <Menu />
   </template>
   
